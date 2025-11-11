@@ -1,10 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36511.14 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToQuerystring", "LinqToQuerystring\LinqToQuerystring.csproj", "{7859C906-95D8-4322-AA44-BC854B065AEE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToQueryString.UnitTests", "LinqToQueryString.UnitTests\LinqToQueryString.UnitTests.csproj", "{B60C3B0C-CAD7-4ED2-A1DD-7A6482504F31}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToQueryString.IntegrationTests.Sql", "LinqToQueryString.IntegrationTests\LinqToQueryString.IntegrationTests.Sql.csproj", "{354C3452-BCDC-4048-B897-8CC719298B87}"
@@ -25,8 +23,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo", "Demo", "{D48CA5EF-6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToQuerystring.WebApi", "LinqToQuerystring.WebApi\LinqToQuerystring.WebApi.csproj", "{AC211100-2F7A-46A9-B630-C2DF57F50895}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToQuerystring.EntityFramework", "LinqToQuerystring.EntityFramework\LinqToQuerystring.EntityFramework.csproj", "{854FA068-FF2B-49E3-A632-D0ADEA6264E6}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToQuerystring.IntegrationTests.WebApi", "LinqToQuerystring.IntegrationTests.WebAPI\LinqToQuerystring.IntegrationTests.WebApi.csproj", "{D9657640-E56D-440C-9566-67EDF848A64A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToQuerystring.IntegrationTests.EntityFramework", "LinqToQuerystring.IntegrationTests.EntityFramework\LinqToQuerystring.IntegrationTests.EntityFramework.csproj", "{F766B037-6175-4071-B190-EE08C7C7605D}"
@@ -35,9 +31,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToQuerystring.WebApi2",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToQuerystring.IntegrationTests.WebApi2", "LinqToQuerystring.IntegrationTests.WebAPI\LinqToQuerystring.IntegrationTests.WebApi2.csproj", "{6892C887-A339-4F81-93F2-FFEF64DCE7BE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinqToQuerystringNetCore", "LinqToQuerystring.NetCore\LinqToQuerystringNetCore.csproj", "{3A57C544-9161-4A3D-A599-101732C73D66}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinqToQuerystring.EntityFrameworkCore", "LinqToQuerystring.EntityFrameworkCore\LinqToQuerystring.EntityFrameworkCore.csproj", "{386E72B3-6273-4BCF-8B00-4BF263AA8CA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToQuerystring.Core", "LinqToQuerystring.Core\LinqToQuerystring.Core.csproj", "{C0E74CFB-ED9D-49A8-98AA-3342534EC3E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,10 +41,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7859C906-95D8-4322-AA44-BC854B065AEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7859C906-95D8-4322-AA44-BC854B065AEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7859C906-95D8-4322-AA44-BC854B065AEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7859C906-95D8-4322-AA44-BC854B065AEE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B60C3B0C-CAD7-4ED2-A1DD-7A6482504F31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B60C3B0C-CAD7-4ED2-A1DD-7A6482504F31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B60C3B0C-CAD7-4ED2-A1DD-7A6482504F31}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -81,10 +73,6 @@ Global
 		{AC211100-2F7A-46A9-B630-C2DF57F50895}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC211100-2F7A-46A9-B630-C2DF57F50895}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC211100-2F7A-46A9-B630-C2DF57F50895}.Release|Any CPU.Build.0 = Release|Any CPU
-		{854FA068-FF2B-49E3-A632-D0ADEA6264E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{854FA068-FF2B-49E3-A632-D0ADEA6264E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{854FA068-FF2B-49E3-A632-D0ADEA6264E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{854FA068-FF2B-49E3-A632-D0ADEA6264E6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D9657640-E56D-440C-9566-67EDF848A64A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D9657640-E56D-440C-9566-67EDF848A64A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9657640-E56D-440C-9566-67EDF848A64A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -101,14 +89,14 @@ Global
 		{6892C887-A339-4F81-93F2-FFEF64DCE7BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6892C887-A339-4F81-93F2-FFEF64DCE7BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6892C887-A339-4F81-93F2-FFEF64DCE7BE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3A57C544-9161-4A3D-A599-101732C73D66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3A57C544-9161-4A3D-A599-101732C73D66}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3A57C544-9161-4A3D-A599-101732C73D66}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3A57C544-9161-4A3D-A599-101732C73D66}.Release|Any CPU.Build.0 = Release|Any CPU
 		{386E72B3-6273-4BCF-8B00-4BF263AA8CA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{386E72B3-6273-4BCF-8B00-4BF263AA8CA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{386E72B3-6273-4BCF-8B00-4BF263AA8CA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{386E72B3-6273-4BCF-8B00-4BF263AA8CA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0E74CFB-ED9D-49A8-98AA-3342534EC3E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0E74CFB-ED9D-49A8-98AA-3342534EC3E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0E74CFB-ED9D-49A8-98AA-3342534EC3E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0E74CFB-ED9D-49A8-98AA-3342534EC3E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

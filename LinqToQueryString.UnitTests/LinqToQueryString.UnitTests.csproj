@@ -75,13 +75,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LinqToQuerystring.Core\LinqToQuerystring.Core.csproj">
+      <Project>{c0e74cfb-ed9d-49a8-98aa-3342534ec3e3}</Project>
+      <Name>LinqToQuerystring.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LinqToQueryString.Tests\LinqToQueryString.Tests.csproj">
       <Project>{139B0E4C-BC18-4180-8863-FB248CFDA42E}</Project>
       <Name>LinqToQueryString.Tests</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LinqToQuerystring\LinqToQuerystring.csproj">
-      <Project>{7859C906-95D8-4322-AA44-BC854B065AEE}</Project>
-      <Name>LinqToQuerystring</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

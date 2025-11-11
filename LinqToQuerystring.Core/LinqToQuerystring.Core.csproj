@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <RootNamespace>LinqToQuerystring</RootNamespace>
+        <AssemblyName>LinqToQuerystring</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Antlr3.Runtime" Version="3.5.1" />
+    </ItemGroup>
+
+</Project>
