@@ -7,7 +7,8 @@
     using LinqToQuerystring.Exceptions;
 
     using Machine.Specifications;
-    
+    using Shouldly;
+
     public class When_using_eq_filter_on_a_dynamic_type_decimal_property_without_m_suffix : Dynamics
     {
         private static Exception ex;
