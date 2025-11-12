@@ -13,9 +13,9 @@
 
     public abstract class MongoFunctions
     {
-        private static MongoServer server;
+        private static MongoClient server;
 
-        private static MongoDatabase database;
+        private static IMongoDatabase database;
 
         protected static List<MongoDocument> result;
 
@@ -28,34 +28,34 @@
         private Cleanup cleanup = () =>
         {
             var mongoCollection = database.GetCollection<MongoDocument>("Dynamic");
-            mongoCollection.RemoveAll();
+            mongoCollection.DeleteMany(Builders<MongoDocument>.Filter.Empty);
             var strongMongoCollection = database.GetCollection<ConcreteMongoClass>("ConcreteMongo");
-            strongMongoCollection.RemoveAll();
+            strongMongoCollection.DeleteMany(Builders<ConcreteMongoClass>.Filter.Empty);
         };
 
         private Establish context = () =>
         {
-            server = MongoServer.Create("mongodb://localhost/LinqToQuerystring?safe=true");
+            server = new MongoClient("mongodb://localhost/LinqToQuerystring?safe=true");
             database = server.GetDatabase("LinqToQuerystring");
 
             var strongMongoCollection = database.GetCollection<ConcreteMongoClass>("ConcreteMongo");
             var mongoCollection = database.GetCollection<MongoDocument>("Dynamic");
 
-            mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Saturday", 1, new DateTime(2001, 01, 01), true));
-            mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Satnav", 2, new DateTime(2002, 01, 01), false));
-            mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Saturnalia", 3, new DateTime(2003, 01, 01), true));
-            mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Saturn", 4, new DateTime(2004, 01, 01), true));
-            mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Monday", 5, new DateTime(2005, 01, 01), true));
-            mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Tuesday", 5, new DateTime(2005, 01, 01), true));
-            mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Burns", 5, new DateTime(2005, 01, 01), true));
+            mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Saturday", 1, new DateTime(2001, 01, 01), true));
+            mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Satnav", 2, new DateTime(2002, 01, 01), false));
+            mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Saturnalia", 3, new DateTime(2003, 01, 01), true));
+            mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Saturn", 4, new DateTime(2004, 01, 01), true));
+            mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Monday", 5, new DateTime(2005, 01, 01), true));
+            mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Tuesday", 5, new DateTime(2005, 01, 01), true));
+            mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Burns", 5, new DateTime(2005, 01, 01), true));
 
-            strongMongoCollection.Insert(InstanceBuilders.BuildConcrete("Saturday", 1, new DateTime(2001, 01, 01), true));
-            strongMongoCollection.Insert(InstanceBuilders.BuildConcrete("Satnav", 2, new DateTime(2002, 01, 01), false));
-            strongMongoCollection.Insert(InstanceBuilders.BuildConcrete("Saturnalia", 3, new DateTime(2003, 01, 01), true));
-            strongMongoCollection.Insert(InstanceBuilders.BuildConcrete("Saturn", 4, new DateTime(2004, 01, 01), true));
-            strongMongoCollection.Insert(InstanceBuilders.BuildConcrete("Monday", 5, new DateTime(2005, 01, 01), true));
-            strongMongoCollection.Insert(InstanceBuilders.BuildConcrete("Tuesday", 5, new DateTime(2005, 01, 01), true));
-            strongMongoCollection.Insert(InstanceBuilders.BuildConcrete("Burns", 5, new DateTime(2005, 01, 01), true));
+            strongMongoCollection.InsertOne(InstanceBuilders.BuildConcrete("Saturday", 1, new DateTime(2001, 01, 01), true));
+            strongMongoCollection.InsertOne(InstanceBuilders.BuildConcrete("Satnav", 2, new DateTime(2002, 01, 01), false));
+            strongMongoCollection.InsertOne(InstanceBuilders.BuildConcrete("Saturnalia", 3, new DateTime(2003, 01, 01), true));
+            strongMongoCollection.InsertOne(InstanceBuilders.BuildConcrete("Saturn", 4, new DateTime(2004, 01, 01), true));
+            strongMongoCollection.InsertOne(InstanceBuilders.BuildConcrete("Monday", 5, new DateTime(2005, 01, 01), true));
+            strongMongoCollection.InsertOne(InstanceBuilders.BuildConcrete("Tuesday", 5, new DateTime(2005, 01, 01), true));
+            strongMongoCollection.InsertOne(InstanceBuilders.BuildConcrete("Burns", 5, new DateTime(2005, 01, 01), true));
 
             collection = mongoCollection.AsQueryable();
             strongCollection = strongMongoCollection.AsQueryable();

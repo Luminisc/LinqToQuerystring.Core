@@ -30,7 +30,6 @@ using Antlr.Runtime.Misc;
 namespace  LinqToQuerystring 
 {
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "3.5.0.2")]
-[System.CLSCompliant(false)]
 public partial class LinqToQuerystringLexer : Antlr.Runtime.Lexer
 {
 	public const int EOF=-1;

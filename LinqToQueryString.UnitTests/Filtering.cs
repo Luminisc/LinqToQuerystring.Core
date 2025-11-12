@@ -435,7 +435,7 @@
 
         private It should_return_two_records = () => result.Count().ShouldEqual(11);
 
-        private It should_only_return_records_where_age_is_4 = () => result.ShouldEachConformTo(o => o.Age > -40000000000);
+        private It should_only_return_records_where_age_is_4 = () => result.ShouldEachConformTo(o => o.Age > int.MinValue);
     }
 
     public class When_using_not_eq_filter_on_a_single_long : Filtering

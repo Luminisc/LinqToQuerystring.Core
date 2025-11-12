@@ -11,7 +11,8 @@
     {
         public MongoDocumentClassSerializer()
         {
-            this.RegisterMember("Id", "_id", ObjectIdSerializer.Instance, typeof(ObjectId), null);
+            //this.RegisterMember("Id", "_id", ObjectIdSerializer.Instance, typeof(ObjectId), null);
+            this.RegisterMember("Id", "_id", ObjectIdSerializer.Instance);
         }
 
         protected override MongoDocument CreateInstance(BsonDocument backingDocument)

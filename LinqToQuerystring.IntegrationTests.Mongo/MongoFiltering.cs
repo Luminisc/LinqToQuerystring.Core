@@ -12,9 +12,9 @@
 
     public abstract class MongoFiltering
     {
-        private static MongoServer server;
+        private static MongoClient server;
 
-        private static MongoDatabase database;
+        private static IMongoDatabase database;
 
         protected static List<MongoDocument> result;
 
@@ -30,14 +30,15 @@
 
         private Cleanup cleanup = () =>
             {
+                var emptyFilter = Builders<MongoDocument>.Filter.Empty;
                 var mongoCollection = database.GetCollection<MongoDocument>("Dynamic");
-                mongoCollection.RemoveAll();
+                mongoCollection.DeleteMany(emptyFilter);
 
                 var edgeCases = database.GetCollection<MongoDocument>("EdgeCases");
-                edgeCases.RemoveAll();
+                edgeCases.DeleteMany(emptyFilter);
 
                 var nullables = database.GetCollection<MongoDocument>("NullableCollection");
-                nullables.RemoveAll();
+                nullables.DeleteMany(emptyFilter);
             };
 
         private Establish context = () =>
@@ -64,37 +65,37 @@
 
                 guidArray = Enumerable.Range(1, 5).Select(o => Guid.NewGuid()).ToArray();
 
-                server = MongoServer.Create("mongodb://localhost/LinqToQuerystring?safe=true");
+                server = new MongoClient("mongodb://localhost/LinqToQuerystring?safe=true");
                 database = server.GetDatabase("LinqToQuerystring");
 
                 var mongoCollection = database.GetCollection<MongoDocument>("Dynamic");
 
-                mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Apple", 1, new DateTime(2002, 01, 01), true, 10000000000, 111.111, 111.111f, 0x00, guidArray[0]));
-                mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Apple", 2, new DateTime(2005, 01, 01), false, 30000000000, 333.333, 333.333f, 0x22, guidArray[2]));
-                mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Custard", 1, new DateTime(2003, 01, 01), true, 50000000000, 555.555, 555.555f, 0xDD, guidArray[4]));
-                mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Custard", 2, new DateTime(2002, 01, 01), false, 30000000000, 333.333, 333.333f, 0x00, guidArray[2]));
-                mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Custard", 3, new DateTime(2002, 01, 01), true, 40000000000, 444.444, 444.444f, 0x22, guidArray[3]));
-                mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Banana", 3, new DateTime(2003, 01, 01), false, 10000000000, 111.111, 111.111f, 0x00, guidArray[0]));
-                mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Eggs", 1, new DateTime(2005, 01, 01), true, 40000000000, 444.444, 444.444f, 0xCC, guidArray[3]));
-                mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Eggs", 3, new DateTime(2001, 01, 01), false, 20000000000, 222.222, 222.222f, 0xCC, guidArray[1]));
-                mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Dogfood", 4, new DateTime(2003, 01, 01), true, 30000000000, 333.333, 333.333f, 0xEE, guidArray[2]));
-                mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Dogfood", 4, new DateTime(2004, 01, 01), false, 10000000000, 111.111, 111.111f, 0xDD, guidArray[0]));
-                mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Dogfood", 5, new DateTime(2001, 01, 01), true, 20000000000, 222.222, 222.222f, 0xCC, guidArray[1]));
+                mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Apple", 1, new DateTime(2002, 01, 01), true, 10000000000, 111.111, 111.111f, 0x00, guidArray[0]));
+                mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Apple", 2, new DateTime(2005, 01, 01), false, 30000000000, 333.333, 333.333f, 0x22, guidArray[2]));
+                mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Custard", 1, new DateTime(2003, 01, 01), true, 50000000000, 555.555, 555.555f, 0xDD, guidArray[4]));
+                mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Custard", 2, new DateTime(2002, 01, 01), false, 30000000000, 333.333, 333.333f, 0x00, guidArray[2]));
+                mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Custard", 3, new DateTime(2002, 01, 01), true, 40000000000, 444.444, 444.444f, 0x22, guidArray[3]));
+                mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Banana", 3, new DateTime(2003, 01, 01), false, 10000000000, 111.111, 111.111f, 0x00, guidArray[0]));
+                mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Eggs", 1, new DateTime(2005, 01, 01), true, 40000000000, 444.444, 444.444f, 0xCC, guidArray[3]));
+                mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Eggs", 3, new DateTime(2001, 01, 01), false, 20000000000, 222.222, 222.222f, 0xCC, guidArray[1]));
+                mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Dogfood", 4, new DateTime(2003, 01, 01), true, 30000000000, 333.333, 333.333f, 0xEE, guidArray[2]));
+                mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Dogfood", 4, new DateTime(2004, 01, 01), false, 10000000000, 111.111, 111.111f, 0xDD, guidArray[0]));
+                mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Dogfood", 5, new DateTime(2001, 01, 01), true, 20000000000, 222.222, 222.222f, 0xCC, guidArray[1]));
 
                 var mongoEdgeCaseCollection = database.GetCollection<MongoDocument>("EdgeCases");
 
-                mongoEdgeCaseCollection.Insert(InstanceBuilders.BuildEdgeCase("Apple\\Bob", 1, new DateTime(2002, 01, 01), true));
-                mongoEdgeCaseCollection.Insert(InstanceBuilders.BuildEdgeCase("Apple\bBob", 1, new DateTime(2002, 01, 01), true));
-                mongoEdgeCaseCollection.Insert(InstanceBuilders.BuildEdgeCase("Apple\tBob", 1, new DateTime(2002, 01, 01), true));
-                mongoEdgeCaseCollection.Insert(InstanceBuilders.BuildEdgeCase("Apple\nBob", 1, new DateTime(2002, 01, 01), true));
-                mongoEdgeCaseCollection.Insert(InstanceBuilders.BuildEdgeCase("Apple\fBob", 1, new DateTime(2002, 01, 01), true));
-                mongoEdgeCaseCollection.Insert(InstanceBuilders.BuildEdgeCase("Apple\rBob", 1, new DateTime(2002, 01, 01), true));
-                mongoEdgeCaseCollection.Insert(InstanceBuilders.BuildEdgeCase("Apple\"Bob", 1, new DateTime(2002, 01, 01), true));
-                mongoEdgeCaseCollection.Insert(InstanceBuilders.BuildEdgeCase("Apple'Bob", 1, new DateTime(2002, 01, 01), true));
+                mongoEdgeCaseCollection.InsertOne(InstanceBuilders.BuildEdgeCase("Apple\\Bob", 1, new DateTime(2002, 01, 01), true));
+                mongoEdgeCaseCollection.InsertOne(InstanceBuilders.BuildEdgeCase("Apple\bBob", 1, new DateTime(2002, 01, 01), true));
+                mongoEdgeCaseCollection.InsertOne(InstanceBuilders.BuildEdgeCase("Apple\tBob", 1, new DateTime(2002, 01, 01), true));
+                mongoEdgeCaseCollection.InsertOne(InstanceBuilders.BuildEdgeCase("Apple\nBob", 1, new DateTime(2002, 01, 01), true));
+                mongoEdgeCaseCollection.InsertOne(InstanceBuilders.BuildEdgeCase("Apple\fBob", 1, new DateTime(2002, 01, 01), true));
+                mongoEdgeCaseCollection.InsertOne(InstanceBuilders.BuildEdgeCase("Apple\rBob", 1, new DateTime(2002, 01, 01), true));
+                mongoEdgeCaseCollection.InsertOne(InstanceBuilders.BuildEdgeCase("Apple\"Bob", 1, new DateTime(2002, 01, 01), true));
+                mongoEdgeCaseCollection.InsertOne(InstanceBuilders.BuildEdgeCase("Apple'Bob", 1, new DateTime(2002, 01, 01), true));
 
                 var mongoNullableCollection = database.GetCollection<MongoDocument>("NullableCollection");
-                mongoNullableCollection.Insert(InstanceBuilders.BuildNullableMongoDocument());
-                mongoNullableCollection.Insert(InstanceBuilders.BuildNullableMongoDocument(1, new DateTime(2002, 01, 01), true, 10000000000, 111.111, 111.111f, 0x00, guidArray[0]));
+                mongoNullableCollection.InsertOne(InstanceBuilders.BuildNullableMongoDocument());
+                mongoNullableCollection.InsertOne(InstanceBuilders.BuildNullableMongoDocument(1, new DateTime(2002, 01, 01), true, 10000000000, 111.111, 111.111f, 0x00, guidArray[0]));
 
                 collection = mongoCollection.AsQueryable();
 
@@ -639,7 +640,7 @@
 
         private It should_return_two_records = () => result.Count().ShouldEqual(2);
 
-        private It should_only_return_records_where_guid_matches = () => result.ShouldEachConformTo(o => o["Guid"] == guidArray[1]);
+        private It should_only_return_records_where_guid_matches = () => result.ShouldEachConformTo(o => o["Guid"].AsGuid == guidArray[1]);
     }
 
     public class When_using_not_eq_filter_on_a_single_guid : MongoFiltering
@@ -648,7 +649,7 @@
 
         private It should_return_two_records = () => result.Count().ShouldEqual(9);
 
-        private It should_only_return_records_where_guid_matches = () => result.ShouldEachConformTo(o => o["Guid"] != guidArray[1]);
+        private It should_only_return_records_where_guid_matches = () => result.ShouldEachConformTo(o => o["Guid"].AsGuid != guidArray[1]);
     }
 
     public class When_using_ne_filter_on_a_single_guid : MongoFiltering
@@ -657,7 +658,7 @@
 
         private It should_return_two_records = () => result.Count().ShouldEqual(9);
 
-        private It should_only_return_records_where_guid_matches = () => result.ShouldEachConformTo(o => o["Guid"] != guidArray[1]);
+        private It should_only_return_records_where_guid_matches = () => result.ShouldEachConformTo(o => o["Guid"].AsGuid != guidArray[1]);
     }
 
     public class When_using_not_ne_filter_on_a_single_guid : MongoFiltering
@@ -666,7 +667,7 @@
 
         private It should_return_two_records = () => result.Count().ShouldEqual(2);
 
-        private It should_only_return_records_where_guid_matches = () => result.ShouldEachConformTo(o => o["Guid"] == guidArray[1]);
+        private It should_only_return_records_where_guid_matches = () => result.ShouldEachConformTo(o => o["Guid"].AsGuid == guidArray[1]);
     }
 
     #endregion
@@ -943,7 +944,7 @@
 
         private It should_return_three_records = () => result.Count().ShouldEqual(3);
 
-        private It should_only_return_records_where_date_is_2002_01_01 = () => result.ShouldEachConformTo(o => o["Date"].AsDateTime == new DateTime(2002, 01, 01));
+        private It should_only_return_records_where_date_is_2002_01_01 = () => result.ShouldEachConformTo(o => o["Date"].AsBsonDateTime == new DateTime(2002, 01, 01));
     }
 
     public class When_using_not_eq_filter_on_a_single_date : MongoFiltering
@@ -952,7 +953,7 @@
 
         private It should_return_eight_records = () => result.Count().ShouldEqual(8);
 
-        private It should_only_return_records_where_age_is_not_2002_01_01 = () => result.ShouldEachConformTo(o => o["Date"].AsDateTime != new DateTime(2002, 01, 01));
+        private It should_only_return_records_where_age_is_not_2002_01_01 = () => result.ShouldEachConformTo(o => o["Date"].AsBsonDateTime != new DateTime(2002, 01, 01));
     }
 
     public class When_using_ne_filter_on_a_single_date : MongoFiltering
@@ -961,7 +962,7 @@
 
         private It should_return_eight_records = () => result.Count().ShouldEqual(8);
 
-        private It should_only_return_records_where_age_is_not_2002_01_01 = () => result.ShouldEachConformTo(o => o["Date"].AsDateTime != new DateTime(2002, 01, 01));
+        private It should_only_return_records_where_age_is_not_2002_01_01 = () => result.ShouldEachConformTo(o => o["Date"].AsBsonDateTime != new DateTime(2002, 01, 01));
     }
 
     public class When_using_not_ne_filter_on_a_single_date : MongoFiltering
@@ -970,7 +971,7 @@
 
         private It should_return_three_records = () => result.Count().ShouldEqual(3);
 
-        private It should_only_return_records_where_age_is_2002_01_01 = () => result.ShouldEachConformTo(o => o["Date"].AsDateTime == new DateTime(2002, 01, 01));
+        private It should_only_return_records_where_age_is_2002_01_01 = () => result.ShouldEachConformTo(o => o["Date"].AsBsonDateTime == new DateTime(2002, 01, 01));
     }
 
     public class When_using_gt_filter_on_a_single_date : MongoFiltering
@@ -979,7 +980,7 @@
 
         private It should_return_two_records = () => result.Count().ShouldEqual(3);
 
-        private It should_only_return_records_where_age_is_greater_than_3 = () => result.ShouldEachConformTo(o => o["Date"].AsDateTime > new DateTime(2003, 01, 01));
+        private It should_only_return_records_where_age_is_greater_than_3 = () => result.ShouldEachConformTo(o => o["Date"].AsBsonDateTime > new DateTime(2003, 01, 01));
     }
 
     public class When_using_not_gt_filter_on_a_single_date : MongoFiltering
@@ -988,7 +989,7 @@
 
         private It should_return_two_records = () => result.Count().ShouldEqual(8);
 
-        private It should_only_return_records_where_age_is_not_greater_than_3 = () => result.ShouldEachConformTo(o => !(o["Date"].AsDateTime > new DateTime(2003, 01, 01)));
+        private It should_only_return_records_where_age_is_not_greater_than_3 = () => result.ShouldEachConformTo(o => !(o["Date"].AsBsonDateTime > new DateTime(2003, 01, 01)));
     }
 
     public class When_using_ge_filter_on_a_single_date : MongoFiltering
@@ -997,7 +998,7 @@
 
         private It should_return_two_records = () => result.Count().ShouldEqual(6);
 
-        private It should_only_return_records_where_age_is_greater_than_or_equal_to_3 = () => result.ShouldEachConformTo(o => o["Date"].AsDateTime >= new DateTime(2003, 01, 01));
+        private It should_only_return_records_where_age_is_greater_than_or_equal_to_3 = () => result.ShouldEachConformTo(o => o["Date"].AsBsonDateTime >= new DateTime(2003, 01, 01));
     }
 
     public class When_using_not_ge_filter_on_a_single_date : MongoFiltering
@@ -1006,7 +1007,7 @@
 
         private It should_return_two_records = () => result.Count().ShouldEqual(5);
 
-        private It should_only_return_records_where_age_is_not_greater_than_or_equal_to_3 = () => result.ShouldEachConformTo(o => !(o["Date"].AsDateTime >= new DateTime(2003, 01, 01)));
+        private It should_only_return_records_where_age_is_not_greater_than_or_equal_to_3 = () => result.ShouldEachConformTo(o => !(o["Date"].AsBsonDateTime >= new DateTime(2003, 01, 01)));
     }
 
     public class When_using_lt_filter_on_a_single_date : MongoFiltering
@@ -1015,7 +1016,7 @@
 
         private It should_return_two_records = () => result.Count().ShouldEqual(5);
 
-        private It should_only_return_records_where_age_is_less_than_3 = () => result.ShouldEachConformTo(o => o["Date"].AsDateTime < new DateTime(2003, 01, 01));
+        private It should_only_return_records_where_age_is_less_than_3 = () => result.ShouldEachConformTo(o => o["Date"].AsBsonDateTime < new DateTime(2003, 01, 01));
     }
 
     public class When_using_not_lt_filter_on_a_single_date : MongoFiltering
@@ -1024,7 +1025,7 @@
 
         private It should_return_two_records = () => result.Count().ShouldEqual(6);
 
-        private It should_only_return_records_where_age_is_not_less_than_3 = () => result.ShouldEachConformTo(o => !(o["Date"].AsDateTime < new DateTime(2003, 01, 01)));
+        private It should_only_return_records_where_age_is_not_less_than_3 = () => result.ShouldEachConformTo(o => !(o["Date"].AsBsonDateTime < new DateTime(2003, 01, 01)));
     }
 
     public class When_using_le_filter_on_a_single_date : MongoFiltering
@@ -1033,7 +1034,7 @@
 
         private It should_return_two_records = () => result.Count().ShouldEqual(8);
 
-        private It should_only_return_records_where_age_is_less_than_or_equal_to_3 = () => result.ShouldEachConformTo(o => o["Date"].AsDateTime <= new DateTime(2003, 01, 01));
+        private It should_only_return_records_where_age_is_less_than_or_equal_to_3 = () => result.ShouldEachConformTo(o => o["Date"].AsBsonDateTime <= new DateTime(2003, 01, 01));
     }
 
     public class When_using_not_le_filter_on_a_single_date : MongoFiltering
@@ -1042,7 +1043,7 @@
 
         private It should_return_two_records = () => result.Count().ShouldEqual(3);
 
-        private It should_only_return_records_where_age_is_not_less_than_or_equal_to_3 = () => result.ShouldEachConformTo(o => !(o["Date"].AsDateTime <= new DateTime(2003, 01, 01)));
+        private It should_only_return_records_where_age_is_not_less_than_or_equal_to_3 = () => result.ShouldEachConformTo(o => !(o["Date"].AsBsonDateTime <= new DateTime(2003, 01, 01)));
     }
 
     #endregion
@@ -1461,7 +1462,7 @@
         private It should_return_four_records = () => result.Count().ShouldEqual(4);
 
         private It should_only_return_records_with_name_equal_to_banana_or_date_greater_than_2003_01_01 =
-            () => result.ShouldEachConformTo(o => o["Name"].AsString == "Banana" || o["Date"].AsDateTime > new DateTime(2003, 01, 01));
+            () => result.ShouldEachConformTo(o => o["Name"].AsString == "Banana" || o["Date"].AsBsonDateTime > new DateTime(2003, 01, 01));
     }
 
     public class When_oring_a_filter_and_a_not_filter : MongoFiltering
@@ -1472,7 +1473,7 @@
         private It should_return_four_records = () => result.Count().ShouldEqual(4);
 
         private It should_only_return_records_with_name_equal_to_banana_or_date_greater_than_2003_01_01 =
-            () => result.ShouldEachConformTo(o => o["Name"].AsString == "Banana" || o["Date"].AsDateTime > new DateTime(2003, 01, 01));
+            () => result.ShouldEachConformTo(o => o["Name"].AsString == "Banana" || o["Date"].AsBsonDateTime > new DateTime(2003, 01, 01));
     }
 
     #endregion
@@ -1487,7 +1488,7 @@
         private It should_return_four_records = () => result.Count().ShouldEqual(4);
 
         private It should_only_return_records_with_name_equal_to_apples_complete_equal_to_true_or_date_greater_than_2003_01_01 =
-            () => result.ShouldEachConformTo(o => o["Name"].AsString == "Apple" && o["Complete"].AsBoolean || o["Date"].AsDateTime > new DateTime(2003, 01, 01));
+            () => result.ShouldEachConformTo(o => o["Name"].AsString == "Apple" && o["Complete"].AsBoolean || o["Date"].AsBsonDateTime > new DateTime(2003, 01, 01));
     }
 
     public class When_combining_and_or_not_filters_together : MongoFiltering
@@ -1499,7 +1500,7 @@
 
         private It
             should_only_return_records_with_name_equal_to_apples_complete_equal_to_true_or_date_not_less_than_2003_01_01
-                = () => result.ShouldEachConformTo(o => o["Name"].AsString == "Apple" && o["Complete"].AsBoolean || !(o["Date"].AsDateTime <= new DateTime(2003, 01, 01)));
+                = () => result.ShouldEachConformTo(o => o["Name"].AsString == "Apple" && o["Complete"].AsBoolean || !(o["Date"].AsBsonDateTime <= new DateTime(2003, 01, 01)));
     }
 
     public class When_using_parenthesis : MongoFiltering
@@ -1510,7 +1511,7 @@
         private It should_return_two_records = () => result.Count().ShouldEqual(2);
 
         private It should_only_return_records_with_name_equal_to_custard_and_result_of_complete_equals_true_or_date_greater_than_2003_01_01 =
-            () => result.ShouldEachConformTo(o => o["Name"].AsString == "Apple" && (o["Complete"].AsBoolean || o["Date"].AsDateTime > new DateTime(2003, 01, 01)));
+            () => result.ShouldEachConformTo(o => o["Name"].AsString == "Apple" && (o["Complete"].AsBoolean || o["Date"].AsBsonDateTime > new DateTime(2003, 01, 01)));
     }
 
     public class When_notting_an_entire_parenthesised_expression : MongoFiltering
@@ -1521,7 +1522,7 @@
         private It should_return_two_records = () => result.Count().ShouldEqual(9);
 
         private It should_only_return_records_with_name_equal_to_custard_and_result_of_complete_equals_true_or_date_greater_than_2003_01_01 =
-            () => result.ShouldEachConformTo(o => !(o["Name"].AsString == "Apple" && (o["Complete"].AsBoolean || o["Date"].AsDateTime > new DateTime(2003, 01, 01))));
+            () => result.ShouldEachConformTo(o => !(o["Name"].AsString == "Apple" && (o["Complete"].AsBoolean || o["Date"].AsBsonDateTime > new DateTime(2003, 01, 01))));
     }
 
     #endregion

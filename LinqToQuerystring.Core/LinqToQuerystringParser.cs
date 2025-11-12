@@ -31,7 +31,6 @@ using RewriteRuleITokenStream = Antlr.Runtime.Tree.RewriteRuleTokenStream;
 namespace  LinqToQuerystring 
 {
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "3.5.0.2")]
-[System.CLSCompliant(false)]
 public partial class LinqToQuerystringParser : Antlr.Runtime.Parser
 {
 	internal static readonly string[] tokenNames = new string[] {

@@ -65,14 +65,14 @@ namespace LinqToQuerystring.IntegrationTests.Mongo
         {
             return
                 new MongoDocument(
-                    new BsonDocument { { "Name", name }, { "Date", date }, { "Age", age }, { "Complete", complete }, { "Population", population }, { "Value", value }, { "Cost", cost }, { "Code", code }, { "Guid", guid } });
+                    new BsonDocument { { "Name", name }, { "Date", date }, { "Age", age }, { "Complete", complete }, { "Population", population }, { "Value", value }, { "Cost", cost }, { "Code", code }, { "Guid", new BsonBinaryData(guid, GuidRepresentation.Standard) } });
         }
 
         public static MongoDocument BuildNullableMongoDocument(int? age, DateTime? date, bool? complete, long? population, double? value, float? cost, byte? code, Guid? guid)
         {
             return
                 new MongoDocument(
-                    new BsonDocument { { "Date", date }, { "Age", age }, { "Complete", complete }, { "Population", population }, { "Value", value }, { "Cost", cost }, { "Code", code }, { "Guid", guid } });
+                    new BsonDocument { { "Date", date }, { "Age", age }, { "Complete", complete }, { "Population", population }, { "Value", value }, { "Cost", cost }, { "Code", code }, { "Guid", guid.HasValue ? BsonNull.Value : new BsonBinaryData(guid.Value, GuidRepresentation.Standard) } });
         }
 
         public static MongoDocument BuildNullableMongoDocument()

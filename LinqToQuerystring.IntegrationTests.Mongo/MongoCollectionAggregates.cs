@@ -14,9 +14,9 @@
     {
         protected static Exception ex;
 
-        private static MongoServer server;
+        private static MongoClient server;
 
-        private static MongoDatabase database;
+        private static IMongoDatabase database;
 
         protected static List<MongoDocument> result;
 
@@ -25,7 +25,7 @@
         private Cleanup cleanup = () =>
         {
             var mongoCollection = database.GetCollection<MongoDocument>("Dynamic");
-            mongoCollection.RemoveAll();
+            mongoCollection.DeleteMany(Builders<MongoDocument>.Filter.Empty);
         };
 
         private Establish context = () =>
@@ -40,7 +40,7 @@
                         return Configuration.DefaultTypeMap(type);
                     };
 
-                server = MongoServer.Create("mongodb://localhost/LinqToQuerystring?safe=true");
+                server = new MongoClient("mongodb://localhost/LinqToQuerystring?safe=true");
                 database = server.GetDatabase("LinqToQuerystring");
 
                 var mongoCollection = database.GetCollection<MongoDocument>("Dynamic");
@@ -53,9 +53,9 @@
                         InstanceBuilders.BuildMongoDocument(
                             "Apple", 5, new DateTime(2005, 01, 01), true)
                     });
-                mongoCollection.Insert(doc);
+                mongoCollection.InsertOne(doc);
 
-                mongoCollection.Insert(
+                mongoCollection.InsertOne(
                     InstanceBuilders.BuildComplex(
                         "Andrew",
                         new List<string> { "Apple", "Banana" },
@@ -66,7 +66,7 @@
                             InstanceBuilders.BuildMongoDocument("Banana", 2, new DateTime(2003, 01, 01), false)
                         }));
 
-                mongoCollection.Insert(
+                mongoCollection.InsertOne(
                     InstanceBuilders.BuildComplex(
                         "David",
                         new List<string> { "Apple", "Banana", "Custard" },
@@ -78,7 +78,7 @@
                             InstanceBuilders.BuildMongoDocument("Custard", 3, new DateTime(2007, 01, 01), true)
                         }));
 
-                mongoCollection.Insert(
+                mongoCollection.InsertOne(
                     InstanceBuilders.BuildComplex(
                         "Edward",
                         new List<string> { "Apple", "Custard", "Dogfood", "Eggs" },
@@ -91,7 +91,7 @@
                             InstanceBuilders.BuildMongoDocument("Eggs", 1, new DateTime(2000, 01, 01), true)
                         }));
 
-                mongoCollection.Insert(
+                mongoCollection.InsertOne(
                    InstanceBuilders.BuildComplex(
                        "Boris",
                        new List<string> { "Apple", "Dogfood", "Eggs" },

@@ -11,9 +11,9 @@
 
     public abstract class MongoProjection
     {
-        private static MongoServer server;
+        private static MongoClient server;
 
-        private static MongoDatabase database;
+        private static IMongoDatabase database;
 
         protected static List<Dictionary<string, object>> result;
 
@@ -25,29 +25,30 @@
 
         private Cleanup cleanup = () =>
         {
+            var emptyFilter = Builders<MongoDocument>.Filter.Empty;
             var mongoCollection = database.GetCollection<MongoDocument>("Dynamic");
-            mongoCollection.RemoveAll();
+            mongoCollection.DeleteMany(emptyFilter);
 
             var nullables = database.GetCollection<MongoDocument>("NullableCollection");
-            nullables.RemoveAll();
+            nullables.DeleteMany(emptyFilter);
         };
 
         private Establish context = () =>
         {
-            server = MongoServer.Create("mongodb://localhost/LinqToQuerystring?safe=true");
+            server = new MongoClient("mongodb://localhost/LinqToQuerystring?safe=true");
             database = server.GetDatabase("LinqToQuerystring");
 
             var mongoCollection = database.GetCollection<MongoDocument>("Dynamic");
 
-            mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Apple", 5, new DateTime(2005, 01, 01), true));
-            mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Custard", 3, new DateTime(2007, 01, 01), true));
-            mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Banana", 2, new DateTime(2003, 01, 01), false));
-            mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Eggs", 1, new DateTime(2000, 01, 01), true));
-            mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Dogfood", 4, new DateTime(2009, 01, 01), false));
+            mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Apple", 5, new DateTime(2005, 01, 01), true));
+            mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Custard", 3, new DateTime(2007, 01, 01), true));
+            mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Banana", 2, new DateTime(2003, 01, 01), false));
+            mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Eggs", 1, new DateTime(2000, 01, 01), true));
+            mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Dogfood", 4, new DateTime(2009, 01, 01), false));
 
             var mongoNullableCollection = database.GetCollection<MongoDocument>("NullableCollection");
-            mongoNullableCollection.Insert(InstanceBuilders.BuildNullableMongoDocument());
-            mongoNullableCollection.Insert(InstanceBuilders.BuildNullableMongoDocument(1, new DateTime(2002, 01, 01), true, 10000000000, 111.111, 111.111f, 0x00, Guid.NewGuid()));
+            mongoNullableCollection.InsertOne(InstanceBuilders.BuildNullableMongoDocument());
+            mongoNullableCollection.InsertOne(InstanceBuilders.BuildNullableMongoDocument(1, new DateTime(2002, 01, 01), true, 10000000000, 111.111, 111.111f, 0x00, Guid.NewGuid()));
 
             collection = mongoCollection.AsQueryable();
             nullableCollection = mongoNullableCollection.AsQueryable();

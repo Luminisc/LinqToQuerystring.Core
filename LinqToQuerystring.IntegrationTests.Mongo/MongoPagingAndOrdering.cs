@@ -11,9 +11,9 @@
 
     public class MongoPagingAndOrdering
     {
-        private static MongoServer server;
+        private static MongoClient server;
 
-        private static MongoDatabase database;
+        private static IMongoDatabase database;
 
         protected static List<MongoDocument> result;
 
@@ -33,46 +33,47 @@
 
         private Cleanup cleanup = () =>
         {
+            var emptyFilter = Builders<MongoDocument>.Filter.Empty;
             var mongoCollection = database.GetCollection<MongoDocument>("Dynamic");
-            mongoCollection.RemoveAll();
+            mongoCollection.DeleteMany(emptyFilter);
 
             var complexMongoCollection = database.GetCollection<MongoDocument>("ComplexDynamic");
-            complexMongoCollection.RemoveAll();
+            complexMongoCollection.DeleteMany(emptyFilter);
 
             var nullables = database.GetCollection<MongoDocument>("NullableCollection");
-            nullables.RemoveAll();
+            nullables.DeleteMany(emptyFilter);
         };
 
         private Establish context = () =>
         {
             guidArray = Enumerable.Range(1, 5).Select(o => Guid.NewGuid()).ToArray();
 
-            server = MongoServer.Create("mongodb://localhost/LinqToQuerystring?safe=true");
+            server = new MongoClient("mongodb://localhost/LinqToQuerystring?safe=true");
             database = server.GetDatabase("LinqToQuerystring");
 
             var mongoCollection = database.GetCollection<MongoDocument>("Dynamic");
             var complexMongoCollection = database.GetCollection<MongoDocument>("ComplexDynamic");
             var nullableMongoCollection = database.GetCollection<MongoDocument>("NullableCollection");
 
-            mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Apple", 5, new DateTime(2005, 01, 01), true));
-            mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Custard", 3, new DateTime(2007, 01, 01), true));
-            mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Banana", 2, new DateTime(2003, 01, 01), false));
-            mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Eggs", 1, new DateTime(2000, 01, 01), true));
-            mongoCollection.Insert(InstanceBuilders.BuildMongoDocument("Dogfood", 4, new DateTime(2009, 01, 01), false));
+            mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Apple", 5, new DateTime(2005, 01, 01), true));
+            mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Custard", 3, new DateTime(2007, 01, 01), true));
+            mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Banana", 2, new DateTime(2003, 01, 01), false));
+            mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Eggs", 1, new DateTime(2000, 01, 01), true));
+            mongoCollection.InsertOne(InstanceBuilders.BuildMongoDocument("Dogfood", 4, new DateTime(2009, 01, 01), false));
 
             collection = mongoCollection.AsQueryable();
             concreteList = collection.ToList();
 
-            complexMongoCollection.Insert(InstanceBuilders.BuildComplexMongoDocument("Charles", InstanceBuilders.BuildMongoDocument("Apple", 5, new DateTime(2005, 01, 01), true)));
-            complexMongoCollection.Insert(InstanceBuilders.BuildComplexMongoDocument("Andrew", InstanceBuilders.BuildMongoDocument("Custard", 3, new DateTime(2007, 01, 01), true)));
-            complexMongoCollection.Insert(InstanceBuilders.BuildComplexMongoDocument("David", InstanceBuilders.BuildMongoDocument("Banana", 2, new DateTime(2003, 01, 01), false)));
-            complexMongoCollection.Insert(InstanceBuilders.BuildComplexMongoDocument("Edward", InstanceBuilders.BuildMongoDocument("Eggs", 1, new DateTime(2000, 01, 01), true)));
-            complexMongoCollection.Insert(InstanceBuilders.BuildComplexMongoDocument("Boris", InstanceBuilders.BuildMongoDocument("Dogfood", 4, new DateTime(2009, 01, 01), false)));
+            complexMongoCollection.InsertOne(InstanceBuilders.BuildComplexMongoDocument("Charles", InstanceBuilders.BuildMongoDocument("Apple", 5, new DateTime(2005, 01, 01), true)));
+            complexMongoCollection.InsertOne(InstanceBuilders.BuildComplexMongoDocument("Andrew", InstanceBuilders.BuildMongoDocument("Custard", 3, new DateTime(2007, 01, 01), true)));
+            complexMongoCollection.InsertOne(InstanceBuilders.BuildComplexMongoDocument("David", InstanceBuilders.BuildMongoDocument("Banana", 2, new DateTime(2003, 01, 01), false)));
+            complexMongoCollection.InsertOne(InstanceBuilders.BuildComplexMongoDocument("Edward", InstanceBuilders.BuildMongoDocument("Eggs", 1, new DateTime(2000, 01, 01), true)));
+            complexMongoCollection.InsertOne(InstanceBuilders.BuildComplexMongoDocument("Boris", InstanceBuilders.BuildMongoDocument("Dogfood", 4, new DateTime(2009, 01, 01), false)));
 
-            nullableMongoCollection.Insert(InstanceBuilders.BuildNullableMongoDocument(3, new DateTime(2003, 01, 01), true, 30000000000, 333.333, 333.333f, 0xEE, guidArray[2]));
-            nullableMongoCollection.Insert(InstanceBuilders.BuildNullableMongoDocument(1, new DateTime(2001, 01, 01), false, 10000000000, 111.111, 111.111f, 0xDD, guidArray[0]));
-            nullableMongoCollection.Insert(InstanceBuilders.BuildNullableMongoDocument());
-            nullableMongoCollection.Insert(InstanceBuilders.BuildNullableMongoDocument(2, new DateTime(2002, 01, 01), true, 20000000000, 222.222, 222.222f, 0xCC, guidArray[1]));
+            nullableMongoCollection.InsertOne(InstanceBuilders.BuildNullableMongoDocument(3, new DateTime(2003, 01, 01), true, 30000000000, 333.333, 333.333f, 0xEE, guidArray[2]));
+            nullableMongoCollection.InsertOne(InstanceBuilders.BuildNullableMongoDocument(1, new DateTime(2001, 01, 01), false, 10000000000, 111.111, 111.111f, 0xDD, guidArray[0]));
+            nullableMongoCollection.InsertOne(InstanceBuilders.BuildNullableMongoDocument());
+            nullableMongoCollection.InsertOne(InstanceBuilders.BuildNullableMongoDocument(2, new DateTime(2002, 01, 01), true, 20000000000, 222.222, 222.222f, 0xCC, guidArray[1]));
 
             complexCollection = complexMongoCollection.AsQueryable();
             complexList = complexCollection.ToList();
