@@ -14,9 +14,10 @@
     <ProjectReference Include="..\LinqToQuerystring.Core\LinqToQuerystring.Core.csproj" />
     <ProjectReference Include="..\LinqToQueryString.Tests\LinqToQueryString.Tests.csproj" />
     <PackageReference Include="Machine.Specifications" Version="1.1.3" />
+    <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.10.2" />
     <PackageReference Include="Machine.Specifications.Should" Version="1.0.0" />
-    <PackageReference Include="Moq" Version="4.10.1" />
-    <PackageReference Include="MSTest" Version="4.0.1" />
+    <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="MSTest" Version="4.0.2" />
     <PackageReference Include="Shouldly" Version="4.3.0" />
   </ItemGroup>
 </Project>
