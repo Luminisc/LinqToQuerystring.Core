@@ -5,8 +5,27 @@
         <RootNamespace>LinqToQuerystring</RootNamespace>
         <AssemblyName>LinqToQuerystring</AssemblyName>
         <LangVersion>9</LangVersion>
+        <OutputType>Library</OutputType>
+        <VersionPrefix>2.1.0.0</VersionPrefix>
+        <IncludeSymbols>true</IncludeSymbols>
+        <IncludeBuildOutput>true</IncludeBuildOutput>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
-
+    <PropertyGroup>
+        <AssemblyTitle>LinqToQuerystring.Core</AssemblyTitle>
+        <Description>For of beyond-code.com/LinqToQuerystring for NET Core</Description>
+        <Product>LinqToQuerystring.Core</Product>
+        <Copyright>Copyright ©  2025</Copyright>
+        <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
+        <FileVersion>$(VersionPrefix)</FileVersion>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <PackageId>LinqToQuerystring.Core</PackageId>
+        <Title>LinqToQuerystring.Core</Title>
+        <Authors>Alexander Romanenko, JeanRessouche</Authors>
+        <PackageProjectUrl>https://github.com/Luminisc/LinqToQuerystring.Core</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Luminisc/LinqToQuerystring.Core</RepositoryUrl>
+        <PackageTags>LINQ;custom-provider</PackageTags>
+    </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Antlr3.Runtime" Version="3.5.1" />
     </ItemGroup>
