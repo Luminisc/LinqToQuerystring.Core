@@ -4,6 +4,7 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <RootNamespace>LinqToQuerystring</RootNamespace>
         <AssemblyName>LinqToQuerystring</AssemblyName>
+        <LangVersion>9</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>

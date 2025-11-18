@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
@@ -11,3 +12,5 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("dd21eed0-3fb8-4bf5-9486-67fcfba1df43")]
+
+[assembly: DoNotParallelize]

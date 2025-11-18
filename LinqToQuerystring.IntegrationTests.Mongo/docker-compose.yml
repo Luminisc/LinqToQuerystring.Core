@@ -1,5 +1,5 @@
 services:
-  witsml_store:
+  mongo-test-db:
     image: mongo:latest
     ports:
     - 27017:27017

@@ -1,12 +1,11 @@
 ﻿namespace LinqToQuerystring.TreeNodes.DataTypes
 {
+    using Antlr.Runtime;
+    using LinqToQuerystring.TreeNodes.Base;
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
-
-    using Antlr.Runtime;
-
-    using LinqToQuerystring.TreeNodes.Base;
 
     public class SingleNode : TreeNode
     {
@@ -17,7 +16,7 @@
 
         public override Expression BuildLinqExpression(IQueryable query, Expression expression, Expression item = null)
         {
-            return Expression.Constant(Convert.ToSingle(this.Text.Replace("f", string.Empty)));
+            return Expression.Constant(Convert.ToSingle(this.Text.Replace("f", string.Empty), CultureInfo.InvariantCulture));
         }
     }
 }
